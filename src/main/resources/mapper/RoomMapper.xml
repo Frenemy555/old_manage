@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianya.demos.mapper.RoomMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO room(building_id, room_name, bed_count, room_type, is_deleted)
+        VALUES(#{buildingId}, #{roomName}, #{bedCount}, #{roomType}, 0)
+    </insert>
+
+    <update id="updateById">
+        UPDATE room
+        <set>
+            <if test="buildingId != null">building_id = #{buildingId},</if>
+            <if test="roomName != null">room_name = #{roomName},</if>
+            <if test="bedCount != null">bed_count = #{bedCount},</if>
+            <if test="roomType != null">room_type = #{roomType},</if>
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <update id="deleteById">
+        UPDATE room SET is_deleted = 1 WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.tianya.demos.pojo.entity.Room">
+        SELECT * FROM room WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <select id="selectByIdWithBuilding" resultType="com.tianya.demos.pojo.entity.Room">
+        SELECT r.*, b.building_name as buildingName
+        FROM room r LEFT JOIN building b ON r.building_id = b.id
+        WHERE r.id = #{id} AND r.is_deleted = 0
+    </select>
+
+    <select id="selectAll" resultType="com.tianya.demos.pojo.entity.Room">
+        SELECT r.*, b.building_name as buildingName
+        FROM room r LEFT JOIN building b ON r.building_id = b.id
+        WHERE r.is_deleted = 0
+    </select>
+
+    <select id="selectByBuildingId" resultType="com.tianya.demos.pojo.entity.Room">
+        SELECT r.*, b.building_name as buildingName
+        FROM room r LEFT JOIN building b ON r.building_id = b.id
+        WHERE r.building_id = #{buildingId} AND r.is_deleted = 0
+    </select>
+
+</mapper>

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.tianya.demos.pojo.entity
+  configuration:
+    map-underscore-to-camel-case: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-bp1vi4q416895ja84lo.mysql.rds.aliyuncs.com:3306/养老管理系统?useSSL=false
+    username: testuser
+    password: Test_pw1234
+  data:
+    redis:
+      host: localhost
+      port: 6379

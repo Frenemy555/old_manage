@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianya.demos.mapper.ElderlyMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO elderly(name, gender, age, id_card, phone, address, health_status, family_name, family_phone, is_deleted)
+        VALUES(#{name}, #{gender}, #{age}, #{idCard}, #{phone}, #{address}, #{healthStatus}, #{familyName}, #{familyPhone}, 0)
+    </insert>
+
+    <update id="updateById">
+        UPDATE elderly
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="healthStatus != null">health_status = #{healthStatus},</if>
+            <if test="familyName != null">family_name = #{familyName},</if>
+            <if test="familyPhone != null">family_phone = #{familyPhone},</if>
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <update id="deleteById">
+        UPDATE elderly SET is_deleted = 1 WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.tianya.demos.pojo.entity.Elderly">
+        SELECT * FROM elderly WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <select id="selectAll" resultType="com.tianya.demos.pojo.entity.Elderly">
+        SELECT * FROM elderly WHERE is_deleted = 0 ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByName" resultType="com.tianya.demos.pojo.entity.Elderly">
+        SELECT * FROM elderly WHERE name LIKE CONCAT('%', #{name}, '%') AND is_deleted = 0
+    </select>
+
+</mapper>
