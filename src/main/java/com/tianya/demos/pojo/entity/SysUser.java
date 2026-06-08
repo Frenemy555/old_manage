@@ -1,12 +1,16 @@
 package com.tianya.demos.pojo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
 public class SysUser {
+    @NotNull
     private Long id;
     private String username;
+    @JsonIgnore
     private String password;
     private String realName;
     private String phone;

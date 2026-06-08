@@ -24,6 +24,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     // 请求处理前执行：验证token，有效则放行，无效返回401
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         // 从请求头获取令牌
         String token = request.getHeader("Authorization");
         // 验证token

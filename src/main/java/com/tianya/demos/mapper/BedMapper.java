@@ -2,6 +2,7 @@ package com.tianya.demos.mapper;
 
 import com.tianya.demos.pojo.entity.Bed;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface BedMapper {
     // 根据房间id查询床位
     List<Bed> selectByRoomId(Long roomId);
     // 修改床位状态
-    int updateStatus(Long id, Integer status);
+    int updateStatus(@Param("id") Long id, @Param("status") Integer status);
 }

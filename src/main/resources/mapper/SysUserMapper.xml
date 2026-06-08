@@ -28,8 +28,8 @@
 
     <!-- 新增用户(注册) -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user(username,password,real_name,phone,role,status,is_deleted)
-        VALUES(#{username},#{password},#{realName},#{phone},#{role},#{status},0)
+        INSERT INTO sys_user(username,password,real_name,phone,role,status,is_deleted,create_time,update_time)
+        VALUES(#{username},#{password},#{realName},#{phone},#{role},#{status},0,now(),now())
     </insert>
 
     <!-- 修改用户信息 -->
@@ -40,6 +40,7 @@
             <if test="phone != null">phone = #{phone},</if>
             <if test="role != null">role = #{role},</if>
             <if test="status != null">status = #{status},</if>
+            update_time = now()
         </set>
         WHERE id = #{id} AND is_deleted = 0
     </update>
@@ -56,7 +57,7 @@
 
     <!-- 修改密码 -->
     <update id="updatePassword">
-        UPDATE sys_user SET password = #{password} WHERE id = #{id} AND is_deleted = 0
+        UPDATE sys_user SET password = #{password}, update_time = now() WHERE id = #{userId} AND is_deleted = 0
     </update>
 
 </mapper>

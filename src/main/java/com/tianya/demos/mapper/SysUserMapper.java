@@ -2,6 +2,7 @@ package com.tianya.demos.mapper;
 
 import com.tianya.demos.pojo.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface SysUserMapper {
     // 根据id删除用户（逻辑删除）
     int deleteById(Long id);
     // 修改密码
-    int updatePassword(Long id, String password);
+    int updatePassword(@Param("userId") Long userId,@Param("password") String password);
 }
