@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianya.demos.mapper.MedicineMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO medicine(medicine_name, spec, stock, unit, price, produce_date, expire_date, status, is_deleted)
+        VALUES(#{medicineName}, #{spec}, #{stock}, #{unit}, #{price}, #{produceDate}, #{expireDate}, #{status}, 0)
+    </insert>
+
+    <update id="updateById">
+        UPDATE medicine
+        <set>
+            <if test="medicineName != null">medicine_name = #{medicineName},</if>
+            <if test="spec != null">spec = #{spec},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="produceDate != null">produce_date = #{produceDate},</if>
+            <if test="expireDate != null">expire_date = #{expireDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <update id="deleteById">
+        UPDATE medicine SET is_deleted = 1 WHERE id = #{id}
+    </update>
+
+    <update id="updateStock">
+        UPDATE medicine SET stock = #{stock} WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.tianya.demos.pojo.entity.Medicine">
+        SELECT * FROM medicine WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <select id="selectAll" resultType="com.tianya.demos.pojo.entity.Medicine">
+        SELECT * FROM medicine WHERE is_deleted = 0 ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByName" resultType="com.tianya.demos.pojo.entity.Medicine">
+        SELECT * FROM medicine WHERE medicine_name LIKE CONCAT('%', #{medicineName}, '%') AND is_deleted = 0
+    </select>
+
+</mapper>

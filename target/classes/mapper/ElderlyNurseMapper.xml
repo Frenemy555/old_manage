@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianya.demos.mapper.ElderlyNurseMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO elderly_nurse(elderly_id, nurse_item_id, nurse_user_id, nurse_time, remark, is_deleted)
+        VALUES(#{elderlyId}, #{nurseItemId}, #{nurseUserId}, #{nurseTime}, #{remark}, 0)
+    </insert>
+
+    <update id="updateById">
+        UPDATE elderly_nurse
+        <set>
+            <if test="elderlyId != null">elderly_id = #{elderlyId},</if>
+            <if test="nurseItemId != null">nurse_item_id = #{nurseItemId},</if>
+            <if test="nurseUserId != null">nurse_user_id = #{nurseUserId},</if>
+            <if test="nurseTime != null">nurse_time = #{nurseTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <update id="deleteById">
+        UPDATE elderly_nurse SET is_deleted = 1 WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.tianya.demos.pojo.entity.ElderlyNurse">
+        SELECT * FROM elderly_nurse WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <select id="selectAll" resultType="com.tianya.demos.pojo.entity.ElderlyNurse">
+        SELECT en.*,
+               e.name as elderlyName,
+               ni.item_name as nurseItemName,
+               u.real_name as nurseUserName
+        FROM elderly_nurse en
+        LEFT JOIN elderly e ON en.elderly_id = e.id
+        LEFT JOIN nurse_item ni ON en.nurse_item_id = ni.id
+        LEFT JOIN sys_user u ON en.nurse_user_id = u.id
+        WHERE en.is_deleted = 0
+        ORDER BY en.create_time DESC
+    </select>
+
+    <select id="selectByElderlyId" resultType="com.tianya.demos.pojo.entity.ElderlyNurse">
+        SELECT en.*,
+               e.name as elderlyName,
+               ni.item_name as nurseItemName,
+               u.real_name as nurseUserName
+        FROM elderly_nurse en
+        LEFT JOIN elderly e ON en.elderly_id = e.id
+        LEFT JOIN nurse_item ni ON en.nurse_item_id = ni.id
+        LEFT JOIN sys_user u ON en.nurse_user_id = u.id
+        WHERE en.elderly_id = #{elderlyId} AND en.is_deleted = 0
+        ORDER BY en.create_time DESC
+    </select>
+
+</mapper>

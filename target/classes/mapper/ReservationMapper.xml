@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianya.demos.mapper.ReservationMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO reservation(elderly_id, reservation_user, phone, reservation_time, type, status, remark, is_deleted)
+        VALUES(#{elderlyId}, #{reservationUser}, #{phone}, #{reservationTime}, #{type}, #{status}, #{remark}, 0)
+    </insert>
+
+    <update id="updateById">
+        UPDATE reservation
+        <set>
+            <if test="elderlyId != null">elderly_id = #{elderlyId},</if>
+            <if test="reservationUser != null">reservation_user = #{reservationUser},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="reservationTime != null">reservation_time = #{reservationTime},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <update id="deleteById">
+        UPDATE reservation SET is_deleted = 1 WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE reservation SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.tianya.demos.pojo.entity.Reservation">
+        SELECT * FROM reservation WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <select id="selectAll" resultType="com.tianya.demos.pojo.entity.Reservation">
+        SELECT r.*, e.name as elderlyName
+        FROM reservation r
+        LEFT JOIN elderly e ON r.elderly_id = e.id
+        WHERE r.is_deleted = 0
+        ORDER BY r.create_time DESC
+    </select>
+
+</mapper>
