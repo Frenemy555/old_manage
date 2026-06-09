@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tianya.demos.utils.ThreadLocalUtil;
+
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CheckInServiceImpl implements CheckInService {
@@ -22,6 +25,9 @@ public class CheckInServiceImpl implements CheckInService {
     // 提交入住申请：状态默认为0（待审批），插入数据库
     @Override
     public Result<String> apply(CheckIn checkIn) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Long userId = Long.valueOf(claims.get("id").toString());
+        checkIn.setApplyUserId(userId);
         checkIn.setStatus(0);
         checkInMapper.insert(checkIn);
         return Result.success("申请提交成功");

@@ -29,13 +29,12 @@ public class SysUserController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    // 注册
+    // 新增用户（管理员在用户管理中新增）
     @PostMapping("/register")
-    public Result register(@RequestParam @Pattern(regexp = "^\\S+$") String username,
-                           @RequestParam @Pattern(regexp = "^\\S{5,16}$") String password) {
-        SysUser u = userService.getByUsername(username);
+    public Result register(@RequestBody SysUser user) {
+        SysUser u = userService.getByUsername(user.getUsername());
         if (u == null) {
-            userService.register(username, password);
+            userService.register(user);
             return Result.success();
         } else {
             return Result.error("该用户名已被占用");

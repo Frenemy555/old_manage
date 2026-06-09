@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tianya.demos.utils.ThreadLocalUtil;
+
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MedicineRecordServiceImpl implements MedicineRecordService {
@@ -24,6 +27,10 @@ public class MedicineRecordServiceImpl implements MedicineRecordService {
     @Override
     @Transactional
     public Result<String> add(MedicineRecord medicineRecord) {
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        Long userId = Long.valueOf(claims.get("id").toString());
+        medicineRecord.setOperatorId(userId);
+
         Medicine medicine = medicineMapper.selectById(medicineRecord.getMedicineId());
         if(medicine == null){
             return Result.error("药品不存在");

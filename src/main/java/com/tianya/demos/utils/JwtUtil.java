@@ -32,14 +32,14 @@ public class JwtUtil {
 
     // 根据用户id生成JWT令牌
     public static String genToken(Long userId) {
-        Map<String, Object> claims = Map.of("userId", userId);
+        Map<String, Object> claims = Map.of("id", userId);
         return genToken(claims);
     }
 
     // 从JWT令牌中解析用户id
     public static Long getUserId(String token) {
         Map<String, Object> claims = parseToken(token);
-        return Long.valueOf(claims.get("userId").toString());
+        return Long.valueOf(claims.get("id").toString());
     }
 
 }

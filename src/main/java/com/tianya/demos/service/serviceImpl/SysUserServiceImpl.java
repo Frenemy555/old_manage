@@ -22,14 +22,14 @@ public class SysUserServiceImpl implements SysUserService {
         return userMapper.selectByUsername(username);
     }
 
-    // 注册
+    // 新增用户（管理员在用户管理中新增）
     @Override
-    public void register(String username, String password) {
-        String md5String = Md5Util.getMD5String(password);
-        SysUser user = new SysUser();
-        user.setUsername(username);
+    public void register(SysUser user) {
+        String md5String = Md5Util.getMD5String(user.getPassword());
         user.setPassword(md5String);
-        user.setStatus(1);
+        if (user.getStatus() == null) {
+            user.setStatus(1);
+        }
         user.setIsDeleted(0);
         userMapper.insert(user);
     }

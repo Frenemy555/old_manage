@@ -14,4 +14,9 @@ public class MedicineRecord {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Integer isDeleted;
+
+    // 关联字段
+    private String elderlyName;
+    private String medicineName;
+    private String operatorName;
 }
